@@ -63,7 +63,11 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-        // TODO: fill this in
+        for (Entry entry: entries) {
+        	if (equals(entry.getKey(), target)){
+        		return entry;
+        	}
+        }
 		return null;
 	}
 
@@ -98,7 +102,12 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-        // TODO: fill this in.
+        if (containsKey(key)){
+        	//if it contains the key;
+        	//find the value
+        	return findEntry(key).getValue();
+        }
+
 		return null;
 	}
 
@@ -118,8 +127,21 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-        // TODO: fill this in.
-        return null;
+		//Find the old entry
+		//replace with this key and value
+		Entry entry = findEntry(key);
+		
+		if (equals(entry, null)){ 
+		//if you cannot find the entry, make a new one!
+			entry = new Entry(key, value);
+        	entries.add(entry);
+        	return null;
+		}
+		
+		//if you can find an entry, update value
+        V oldValue = entry.getValue();//get the old value
+        entry.setValue(value);//set the new value
+        return oldValue;
 	}
 
 	@Override
@@ -131,8 +153,14 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-        // TODO: fill this in.
-        return null;
+        for (Entry entry: entries) { //iterate through entries
+        	if (equals(entry.getKey(), key)){ //check if it's the entry you want
+        		V value = entry.getValue(); //store the value temporarily
+        		entries.remove(entry); // remove entry from the list
+        		return value; //return old value
+        	}
+        }
+		return null; //return null if not found
 	}
 
 	@Override
